@@ -18,7 +18,7 @@ namespace Proyecto.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Pacientes()
         {
             return View();
         }

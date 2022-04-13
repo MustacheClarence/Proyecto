@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Pacientes";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>prueba, poner lista de pacientes.</p>
+<div class="row">
+    <div class="col-lg-15 col-lg-offset-3">
+        <form id="info">
+        Nombre 
+        <input type="text" name="nombre"/>
+        ID
+        <input type="text" name="id"/>
+        Edad
+        <input type="text" name="edad"/>
+        Telefono
+        <input type="text" name="tel"/>
+        Ultima Consulta
+        <input type="date" name="ultConsulta"/>
+        Proxima Consulta
+        <input type="date" name="proxConsulta"/>
+        <input type="submit" value="Agregar"/>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#info").submit(function (e) {
+                e.preventDefault();
+
+                url = "@Url.Content("~/Paciente/Agregar")"
+                parametros = $(this).serialize();
+
+                $.post(url, parametros, function(data) {
+                    if (data == "1"){
+                        document.location.href = "@Url.Content("~/")";
+                    }
+                    else{
+                        alert(data)
+                    }
+                })
+            })
+        })
+    </script>
+}
