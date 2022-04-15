@@ -1,28 +1,37 @@
-﻿@{
+﻿@using System;
+
+@{
     ViewData["Title"] = "Pacientes";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>prueba, poner lista de pacientes.</p>
+@{
+    DateTime hoy = DateTime.Today;
+}
+
+<p>prueba, poner lista de pacientes.</p> 
 <div class="row">
     <div class="col-lg-15 col-lg-offset-3">
         <form id="info">
-        Nombre 
+        Nombre: 
         <input type="text" name="nombre"/>
-        ID
+        ID:
         <input type="text" name="id"/>
-        Edad
+        Edad:
         <input type="text" name="edad"/>
-        Telefono
+        Telefono:
         <input type="text" name="tel"/>
-        Ultima Consulta
-        <input type="date" name="ultConsulta"/>
-        Proxima Consulta
-        <input type="date" name="proxConsulta"/>
+        Ultima Consulta:
+        <input type="datetime" name="ultConsulta" value="@hoy"/>
+        Proxima Consulta:
+        <input type="datetime" name="proxConsulta" value="mm/dd/yyyy"/>
+        Diagnostico:
+        <input type="text" name="diagnosito"/>
         <input type="submit" value="Agregar"/>
         </form>
     </div>
 </div>
+
 
 @section scripts{
     <script>
@@ -35,7 +44,7 @@
 
                 $.post(url, parametros, function(data) {
                     if (data == "1"){
-                        document.location.href = "@Url.Content("~/")";
+                        document.location.href = "@Url.Content("~/Home/Pacientes")";
                     }
                     else{
                         alert(data)
