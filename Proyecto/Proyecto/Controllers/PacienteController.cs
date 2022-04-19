@@ -15,7 +15,7 @@ namespace Proyecto.Controllers
         {
             try
             {
-                //AGREGAR CODIGO PARA AGREGAR PACIENTES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //..............................................................CODIGO PARA AGREGAR PACIENTES...........................................................
                 if(nombre == null || id == null || edad == null || tel == null)
                 {
                     return Content("Profavor ingrese todos los datos requeridos");
@@ -61,6 +61,27 @@ namespace Proyecto.Controllers
                 return Content("No se pudo agregar correctamente" + e.Message);
             }
             
+        }
+
+        public IActionResult DRLD()
+        {
+            //................OBTENER PACIENTES QUE DEBERIAN REALIZAR LIMPIEZA DENTAL...............................................
+            return NoContent();
+        }
+        public IActionResult DSTO()
+        {
+            //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE ORTODONCIA..........................
+            return NoContent();
+        }        
+        public IActionResult DSTC()
+        {
+            //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE CARIES..........................
+            return NoContent();
+        }
+        public IActionResult DSTE()
+        {
+            //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO ESPECIFICO..........................
+            return NoContent();
         }
     }
 }
