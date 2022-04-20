@@ -9,34 +9,59 @@
     DateTime hoy = DateTime.Today;
 }
 
-<p>prueba, poner lista de pacientes.</p> 
-<div class="row">
-    <div class="col-lg-15 col-lg-offset-3">
-        <form id="info">
+<p>Formulario para agregar un paciente.</p> 
+<div class="row">    
+        <form id="agregar">
+
         Nombre: 
         <input type="text" name="nombre"/>
+
         ID:
         <input type="text" name="id"/>
+
         Edad:
         <input type="text" name="edad"/>
+
         Telefono:
         <input type="text" name="tel"/>
+
         Ultima Consulta:
         <input type="datetime" name="ultConsulta" value="@hoy"/>
+
         Proxima Consulta:
         <input type="datetime" name="proxConsulta" value="mm/dd/yyyy"/>
+
         Diagnostico:
-        <input type="text" name="diagnosito"/>
+        <select name="diagnositco" id="diagnostico">
+            <option selected="selected">Limpieza dental</option>
+            <option >Ortodoncia</option>
+            <option >Contra caries</option>
+            <option >Especifico</option>
+        </select>
+        
         <input type="submit" value="Agregar"/>
-        </form>
-    </div>
+        </form>        
 </div>
 
+<hr />
+<p>Formulario para buscar un paciente.</p> 
+<div class="row">
+    <form id="buscar">
+
+        Nombre: 
+        <input type="text" name="nombre"/>
+
+        ID:
+        <input type="text" name="id"/>
+
+        <input type="submit" value="Buscar"/>
+    </form>
+</div>
 
 @section scripts{
     <script>
         $(document).ready(function () {
-            $("#info").submit(function (e) {
+            $("#agregar").submit(function (e) {
                 e.preventDefault();
 
                 url = "@Url.Content("~/Paciente/Agregar")"
