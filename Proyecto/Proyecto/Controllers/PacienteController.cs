@@ -6,6 +6,8 @@ namespace Proyecto.Controllers
     public class PacienteController : Controller
     {
         static AVL ArbolVL = new AVL();
+        static List<Paciente> pacientesList = new List<Paciente>();
+        DateTime hoy = DateTime.Now;
         public IActionResult Index()
         {
             return View();
@@ -53,6 +55,7 @@ namespace Proyecto.Controllers
                 paciente.Diagnostico = diagnostico;
 
                 ArbolVL.Insertar(paciente);
+                pacientesList.Add(paciente);
 
                 return Content("1");
             }
@@ -64,24 +67,71 @@ namespace Proyecto.Controllers
         }
 
         public IActionResult DRLD()
-        {
+        {            
             //................OBTENER PACIENTES QUE DEBERIAN REALIZAR LIMPIEZA DENTAL...............................................
-            return NoContent();
+            List<Paciente> LD = new List<Paciente>();
+            foreach (var paciente in pacientesList)
+            {
+                if (paciente.Diagnostico == null && (hoy - paciente.LastConsult).TotalDays >= 180)//no tiene diagnostico y no ah ido en 6 meses o 180 dias
+                {
+                    LD.Add(paciente);
+                }
+            }
+            return View(LD);
         }
         public IActionResult DSTO()
         {
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE ORTODONCIA..........................
-            return NoContent();
+            List<Paciente> TO = new List<Paciente>();
+            foreach (var paciente in pacientesList)
+            {
+                if ((paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")) && ((hoy - paciente.LastConsult).TotalDays >= 60)) // es ortodonica y no a ido en 2 meses o 60 dias
+                {
+                    TO.Add(paciente);
+                }
+            }
+            return View(TO);
         }        
         public IActionResult DSTC()
         {
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE CARIES..........................
-            return NoContent();
+            List<Paciente> TC = new List<Paciente>();
+            foreach (var paciente in pacientesList)
+            {
+                if ((paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")) && ((hoy - paciente.LastConsult).TotalDays >= 120)) // es caries y no a ido en 4 meses o 120 dias
+                {
+                    TC.Add(paciente);
+                }
+            }
+            return View(TC);            
         }
         public IActionResult DSTE()
         {
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO ESPECIFICO..........................
-            return NoContent();
+            bool ContainsOrto;
+            bool ContainsCaries;
+            bool Limpieza;
+
+            List<Paciente> TE = new List<Paciente>();
+
+            foreach (var paciente in pacientesList)
+            {
+                if(paciente.Diagnostico == null){
+                    Limpieza = true;
+                }else Limpieza = false;
+                if (paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")){
+                    ContainsOrto = true;
+                }else ContainsOrto = false;
+                if(paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")){
+                    ContainsCaries = true;
+                }else ContainsCaries = false;
+
+                if(!ContainsCaries && !ContainsOrto && !Limpieza)// tiene diagnostico pero no es ni caries ni ortodoncia
+                {
+                    TE.Add(paciente);
+                }                
+            }
+            return View(TE);
         }
     }
 }
