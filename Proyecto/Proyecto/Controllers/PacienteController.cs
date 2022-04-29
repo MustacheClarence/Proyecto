@@ -65,6 +65,30 @@ namespace Proyecto.Controllers
             }
             
         }
+        //public IActionResult Buscar(string nombre, string id)
+        //{// .......................PREGUNTAR SOBRE RETURN...................
+        //    try
+        //    {
+        //        if(nombre == null && id == null)
+        //        {
+        //            return Content("Ingrese el nombre o el dpi de la persona que quiera buscar");
+        //        }
+        //        if (id != null)
+        //        {
+        //            Paciente paciente = ArbolVL.BuscarID(id, ArbolVL.raiz).paciente;
+        //            return Content(paciente);
+        //        }
+        //        else
+        //        {
+        //            Paciente paciente = ArbolVL.BuscarNombre(nombre, ArbolVL.raiz).paciente;
+        //            return Content(paciente);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content("No se pudo agregar correctamente\n" + e.Message);
+        //    }
+        //}
 
         public IActionResult DRLD()
         {            

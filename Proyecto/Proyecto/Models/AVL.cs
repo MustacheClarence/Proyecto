@@ -2,7 +2,7 @@
 {
     public class AVL
     {
-        Nodo raiz;
+        public Nodo raiz;
         public AVL()
         {
             this.raiz = null;

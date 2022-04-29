@@ -1,0 +1,42 @@
+﻿
+@model List<Paciente>
+@{
+    ViewData["Title"] = "Consultas";
+}
+<div>
+    Obtener la los pacientes que deberían realizarse una limpieza dental.....................................
+    <input type="button" name="DRLD" value="Buscar" />
+    <br />
+    Obtener a los pacientes que deben dar seguimiento a su tratamiento de ortodoncia......
+    <input type="button" name="DSTO" value="Buscar" />
+    <br />
+    Obtener a los pacientes que deben dar seguimiento a su tratamiento contra las caries..
+    <input type="button" name="DSTC" value="Buscar" />
+    <br />
+    Obtener a los pacientes que tengan un tratamiento específico..................................................
+    <input type="button" name="DSTE" value="Buscar" />
+</div>
+<hr />
+@if (Model != null){
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Edad</td>
+                <td>Telefono</td>
+                <td>Ultima visita</td>
+                <td>Diagnostico</td>
+            </tr>
+        </thead>
+        @foreach(var paciente in Model)
+        {
+            <tr>
+                <td>@paciente.Name</td>
+                <td>@paciente.Age</td>
+                <td>@paciente.Tel</td>
+                <td>@paciente.LastConsult</td>
+                <td>@paciente.Diagnostico</td>
+            </tr>
+        }
+    </table>
+}
