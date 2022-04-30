@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Pacientes que deberian realizar limpieza dental.";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+@model List<Paciente>
+
+@if (Model != null){
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Edad</td>
+                <td>Telefono</td>
+                <td>Ultima visita</td>
+                <td>Diagnostico</td>
+            </tr>
+        </thead>
+        @foreach(var paciente in Model)
+        {
+            <tr>
+                <td>@paciente.Name</td>
+                <td>@paciente.Age</td>
+                <td>@paciente.Tel</td>
+                <td>@paciente.LastConsult</td>
+                <td>@paciente.Diagnostico</td>
+            </tr>
+        }
+    </table>
+}
