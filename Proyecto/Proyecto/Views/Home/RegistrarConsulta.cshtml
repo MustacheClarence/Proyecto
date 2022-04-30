@@ -1,3 +1,40 @@
-﻿<div class="text-center">
-    <h2 class="display-4">Holi!</h2>
+﻿@{
+    ViewData["Title"] = "Registro de consultas";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Formulario para buscar un paciente.</p> 
+<div class="row">
+    <form id="buscar">
+
+        Nombre: 
+        <input type="text" name="nombre"/>
+
+        ID:
+        <input type="text" name="id"/>
+
+        <input type="submit" value="Buscar"/>
+    </form>
 </div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#buscar").submit(function (e) {
+                e.preventDefault();
+
+                url = "@Url.Content("~/Paciente/Agregar")"
+                parametros = $(this).serialize();
+
+                $.post(url, parametros, function(data) {
+                    if (data == "1"){
+                        document.location.href = "@Url.Content("~/Home/Pacientes")";
+                    }
+                    else{
+                        alert(data)
+                    }
+                })
+            })
+        })
+    </script>
+}

@@ -33,28 +33,23 @@
             }
 
         }
-        public Nodo BuscarNombre(string nombre, Nodo r)
+        public Paciente BuscarNombre(string nombre, Nodo r)
         {
-            if (raiz == null)
+            Paciente p = new Paciente{ Name = "No Existe" };
+            if(r.subIzq != null)
             {
-                return null;
+                BuscarNombre(nombre, r.subIzq);
             }
-            else if (r.paciente.Name == nombre)
+            if(r.paciente.Name == nombre)
             {
-                return r;
+                p = r.paciente;
             }
-            else if (string.Compare(r.paciente.Name, nombre) < 0)
+            if(r.subDer != null)
             {
-                return BuscarID(nombre, r.subDer);
+                BuscarNombre(nombre, r.subDer);
             }
-            else if (string.Compare(r.paciente.Name, nombre) > 0)
-            {
-                return BuscarID(nombre, r.subIzq);
-            }
-            else
-            {
-                return null;
-            }
+
+            return p;
         }
 
         //Obtener factor de equilibrio

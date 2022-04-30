@@ -13,6 +13,7 @@ namespace Proyecto.Controllers
             return View();
         }
 
+        //....................................AGREGAR Y BUSCAR...............................
         public IActionResult Agregar(string nombre, string id, string edad, string tel, DateTime ultConsulta, DateTime proxConsulta, string diagnostico)
         {
             try
@@ -65,31 +66,32 @@ namespace Proyecto.Controllers
             }
             
         }
-        //public IActionResult Buscar(string nombre, string id)
-        //{// .......................PREGUNTAR SOBRE RETURN...................
-        //    try
-        //    {
-        //        if(nombre == null && id == null)
-        //        {
-        //            return Content("Ingrese el nombre o el dpi de la persona que quiera buscar");
-        //        }
-        //        if (id != null)
-        //        {
-        //            Paciente paciente = ArbolVL.BuscarID(id, ArbolVL.raiz).paciente;
-        //            return Content(paciente);
-        //        }
-        //        else
-        //        {
-        //            Paciente paciente = ArbolVL.BuscarNombre(nombre, ArbolVL.raiz).paciente;
-        //            return Content(paciente);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return Content("No se pudo agregar correctamente\n" + e.Message);
-        //    }
-        //}
+        public IActionResult Buscar(string nombre, string id)
+        {// .......................PREGUNTAR SOBRE RETURN...................
+            try
+            {
+                if (nombre == null && id == null)
+                {
+                    return Content("Ingrese el nombre o el dpi de la persona que quiera buscar");
+                }
+                if (id != null)
+                {
+                    Paciente paciente = ArbolVL.BuscarID(id, ArbolVL.raiz).paciente;
+                    return View(paciente);
+                }
+                else
+                {
+                    Paciente paciente = ArbolVL.BuscarNombre(nombre: nombre, r: ArbolVL.raiz);
+                    return View(paciente);
+                }
+            }
+            catch (Exception e)
+            {
+                return Content("Oh oh, hubo un error inesperado , intente en otros momentos\n" + e.Message);
+            }
+        }
 
+        //...................................SEGUIMIENTO DE TRATAMIENTOS.................................
         public IActionResult DRLD()
         {            
             //................OBTENER PACIENTES QUE DEBERIAN REALIZAR LIMPIEZA DENTAL...............................................
@@ -156,6 +158,12 @@ namespace Proyecto.Controllers
                 }                
             }
             return View(TE);
+        }
+
+        //.....................................REGISTRAR CONSULTA.................................
+        public IActionResult RegistrarConsulta()
+        {
+            return View();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿@using System;
-
 @{
     ViewData["Title"] = "Pacientes";
 }
@@ -40,18 +39,15 @@
 
 <hr />
 <p>Formulario para buscar un paciente.</p> 
-<div class="row">
-    <form id="buscar">
 
-        Nombre: 
-        <input type="text" name="nombre"/>
-
-        ID:
-        <input type="text" name="id"/>
-
-        <input type="submit" value="Buscar"/>
-    </form>
-</div>
+@using(Html.BeginForm("Buscar","Paciente",FormMethod.Post,new {enctype = "multipart/form-data"}))
+{
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre"/>
+    <label for="id">ID:</label>
+    <input type="text" name="id"/>
+    <input type="submit" value="Buscar"/>
+}
 
 @section scripts{
     <script>
