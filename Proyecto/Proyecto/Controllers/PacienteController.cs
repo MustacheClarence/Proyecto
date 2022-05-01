@@ -7,6 +7,7 @@ namespace Proyecto.Controllers
     {
         static AVL ArbolVL = new AVL();
         static List<Paciente> pacientesList = new List<Paciente>();
+        static List<NodoFecha> AgendaList = new List<NodoFecha>();
         DateTime hoy = DateTime.Now;
         public IActionResult Index()
         {
@@ -165,5 +166,63 @@ namespace Proyecto.Controllers
         {
             return View();
         }
+
+
+        //.....................................AGENDAR CITA.........................................
+        bool Ready(DateTime Fech)
+        {
+            foreach (var fecaa in AgendaList)
+            {
+
+                if (fecaa.feca == Fech)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+        public IActionResult LaAgg(DateTime FechaAgg, Paciente pp)
+        {
+
+            try
+            {
+
+                if (Ready(FechaAgg))
+                {
+                    foreach (var fecaa in AgendaList)
+                    {
+
+                        if (fecaa.feca == FechaAgg)
+                        {
+                            if (fecaa.Agendacion.Count() < 8)
+                            {
+                                fecaa.Agendacion.Add(pp);
+                            }
+                            else
+                            {
+                                return Content("Esta socado");
+
+
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    AgendaList.Add(new NodoFecha(FechaAgg, pp));
+                }
+                return Content("Te agendaste krnal");
+
+            }
+            catch (Exception e)
+            {
+                return Content("Perdon, algo anda mal");
+            }
+
+        }
     }
+
 }
