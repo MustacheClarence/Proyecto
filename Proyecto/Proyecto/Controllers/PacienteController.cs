@@ -6,7 +6,7 @@ namespace Proyecto.Controllers
     public class PacienteController : Controller
     {
         static AVL ArbolVL = new AVL();
-        static List<Paciente> pacientesList = new List<Paciente>();
+        static List<Paciente> pacientesList;
         static List<NodoFecha> AgendaList = new List<NodoFecha>();
         DateTime hoy = DateTime.Now;
         public IActionResult Index()
@@ -94,46 +94,75 @@ namespace Proyecto.Controllers
 
         //...................................SEGUIMIENTO DE TRATAMIENTOS.................................
         public IActionResult DRLD()
-        {            
+        {
             //................OBTENER PACIENTES QUE DEBERIAN REALIZAR LIMPIEZA DENTAL...............................................
+            pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             List<Paciente> LD = new List<Paciente>();
-            foreach (var paciente in pacientesList)
+            if(pacientesList != null)
             {
-                if (paciente.Diagnostico == null && (hoy - paciente.LastConsult).TotalDays >= 180)//no tiene diagnostico y no ah ido en 6 meses o 180 dias
+                foreach (var paciente in pacientesList)
                 {
-                    LD.Add(paciente);
+                    if (paciente.Diagnostico == null && (hoy - paciente.LastConsult).TotalDays >= 180)//no tiene diagnostico y no ah ido en 6 meses o 180 dias
+                    {
+                        LD.Add(paciente);
+                    }
                 }
+
+                return View(LD);
             }
-            return View(LD);
+            else
+            {
+                return Content("No hay pacientes registrados");
+            }
+            
         }
         public IActionResult DSTO()
         {
+            pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE ORTODONCIA..........................
             List<Paciente> TO = new List<Paciente>();
-            foreach (var paciente in pacientesList)
+           
+            if (pacientesList != null)
             {
-                if ((paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")) && ((hoy - paciente.LastConsult).TotalDays >= 60)) // es ortodonica y no a ido en 2 meses o 60 dias
+                foreach (var paciente in pacientesList)
                 {
-                    TO.Add(paciente);
+                    if ((paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")) && ((hoy - paciente.LastConsult).TotalDays >= 60)) // es ortodonica y no a ido en 2 meses o 60 dias
+                    {
+                        TO.Add(paciente);
+                    }
                 }
+                return View(TO);
             }
-            return View(TO);
+            else
+            {
+                return Content("No hay pacientes registrados");
+            }
         }        
         public IActionResult DSTC()
         {
+            pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE CARIES..........................
             List<Paciente> TC = new List<Paciente>();
-            foreach (var paciente in pacientesList)
+            
+            if (pacientesList != null)
             {
-                if ((paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")) && ((hoy - paciente.LastConsult).TotalDays >= 120)) // es caries y no a ido en 4 meses o 120 dias
+                foreach (var paciente in pacientesList)
                 {
-                    TC.Add(paciente);
+                    if ((paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")) && ((hoy - paciente.LastConsult).TotalDays >= 120)) // es caries y no a ido en 4 meses o 120 dias
+                    {
+                        TC.Add(paciente);
+                    }
                 }
+                return View(TC);
             }
-            return View(TC);            
+            else
+            {
+                return Content("No hay pacientes registrados");
+            }
         }
         public IActionResult DSTE()
         {
+            pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO ESPECIFICO..........................
             bool ContainsOrto;
             bool ContainsCaries;
@@ -141,24 +170,38 @@ namespace Proyecto.Controllers
 
             List<Paciente> TE = new List<Paciente>();
 
-            foreach (var paciente in pacientesList)
+            
+            if(pacientesList != null)
             {
-                if(paciente.Diagnostico == null){
-                    Limpieza = true;
-                }else Limpieza = false;
-                if (paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")){
-                    ContainsOrto = true;
-                }else ContainsOrto = false;
-                if(paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")){
-                    ContainsCaries = true;
-                }else ContainsCaries = false;
-
-                if(!ContainsCaries && !ContainsOrto && !Limpieza)// tiene diagnostico pero no es ni caries ni ortodoncia
+                foreach(var paciente in pacientesList)
                 {
-                    TE.Add(paciente);
-                }                
+                    if (paciente.Diagnostico == null)
+                    {
+                        Limpieza = true;
+                    }
+                    else Limpieza = false;
+                    if (paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia"))
+                    {
+                        ContainsOrto = true;
+                    }
+                    else ContainsOrto = false;
+                    if (paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries"))
+                    {
+                        ContainsCaries = true;
+                    }
+                    else ContainsCaries = false;
+
+                    if (!ContainsCaries && !ContainsOrto && !Limpieza)// tiene diagnostico pero no es ni caries ni ortodoncia
+                    {
+                        TE.Add(paciente);
+                    }
+                }
+                return View(TE);
             }
-            return View(TE);
+            else
+            {
+                return Content("No hay pacientes registrados");
+            }
         }
 
         //.....................................REGISTRAR CONSULTA.................................

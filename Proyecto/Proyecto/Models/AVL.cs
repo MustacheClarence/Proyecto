@@ -8,6 +8,30 @@
             this.raiz = null;
         }
 
+        //Arbol a lista
+        public List<Paciente> toList(List<Paciente> lista, Nodo r)
+        {
+            if (r != null)
+            {
+                if (r.subIzq != null)
+                {
+                    toList(lista, r.subIzq);
+                }
+                lista.Add(r.paciente);
+                if (r.subDer != null)
+                {
+                    toList(lista, r.subDer);
+                }
+
+                return lista;
+            }
+            else
+            {
+                return null;
+            }  
+          
+            
+        }
         //Busqueda
         public Nodo BuscarID(string id, Nodo r)
         {
