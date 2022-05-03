@@ -210,5 +210,11 @@
             return nuevoPadre;
 
         }
+
+        //edicion de paciente
+        public void Editar(Paciente p, DateTime fecha)
+        {
+            p.ProxConsult = fecha;
+        }
     }
 }

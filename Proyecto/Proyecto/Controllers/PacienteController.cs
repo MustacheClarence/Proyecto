@@ -205,13 +205,7 @@ namespace Proyecto.Controllers
         }
 
         //.....................................REGISTRAR CONSULTA.................................
-        public IActionResult RegistrarConsulta()
-        {
-            return View();
-        }
-
-
-        //.....................................AGENDAR CITA.........................................
+  
         bool Ready(DateTime Fech)
         {
             foreach (var fecaa in AgendaList)
@@ -241,10 +235,11 @@ namespace Proyecto.Controllers
                             if (fecaa.Agendacion.Count() < 8)
                             {
                                 fecaa.Agendacion.Add(pp);
+                                ArbolVL.Editar(pp, FechaAgg);
                             }
                             else
                             {
-                                return Content("Esta socado");
+                                return Content("Esta socado, porfavor ingrese otra fecha.");
 
 
                             }
@@ -256,15 +251,41 @@ namespace Proyecto.Controllers
                 {
 
                     AgendaList.Add(new NodoFecha(FechaAgg, pp));
+                    ArbolVL.Editar(pp, FechaAgg);
                 }
                 return Content("Te agendaste krnal");
 
             }
             catch (Exception e)
             {
-                return Content("Perdon, algo anda mal");
+                return Content("Perdon, algo anda mal, probablemente no hayan pacientes ingresados");
             }
 
+        }
+        public IActionResult Asignacion(string nombre, string id, DateTime proxConsulta)
+        {
+            try
+            {
+                if (nombre == null && id == null)
+                {
+                    return Content("Por favor ingrese nombre y Id");
+                }
+                if (id != null)
+                {
+
+                    return LaAgg(proxConsulta, ArbolVL.BuscarID(id, ArbolVL.raiz).paciente);
+
+                }
+                else
+                {
+                    return LaAgg(proxConsulta, ArbolVL.BuscarID(nombre, ArbolVL.raiz).paciente);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Content("Algo anda mal, probablemente no hayan pacientes ingresados");
+            }
         }
     }
 

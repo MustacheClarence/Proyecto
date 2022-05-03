@@ -3,38 +3,16 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Formulario para buscar un paciente.</p> 
-<div class="row">
-    <form id="buscar">
 
-        Nombre: 
-        <input type="text" name="nombre"/>
 
-        ID:
-        <input type="text" name="id"/>
-
-        <input type="submit" value="Buscar"/>
-    </form>
-</div>
-
-@section scripts{
-    <script>
-        $(document).ready(function () {
-            $("#buscar").submit(function (e) {
-                e.preventDefault();
-
-                url = "@Url.Content("~/Paciente/Agregar")"
-                parametros = $(this).serialize();
-
-                $.post(url, parametros, function(data) {
-                    if (data == "1"){
-                        document.location.href = "@Url.Content("~/Home/Pacientes")";
-                    }
-                    else{
-                        alert(data)
-                    }
-                })
-            })
-        })
-    </script>
+@using(Html.BeginForm("Asignacion","Paciente",FormMethod.Post,new {enctype = "multipart/form-data"}))
+{
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre"/>
+    <label for="id">ID:</label>
+    <input type="text" name="id"/>
+    <hr />
+    <label for="proxConsulta">Fecha de Consulta:</label> 
+    <input type="datetime" name="proxConsulta" value="mm/dd/yyyy"/>
+    <input type="submit" value="Registrar">
 }
