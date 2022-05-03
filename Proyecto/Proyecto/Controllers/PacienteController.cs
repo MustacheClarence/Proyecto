@@ -24,42 +24,48 @@ namespace Proyecto.Controllers
                 {
                     return Content("Profavor ingrese todos los datos requeridos");
                 }
-                Paciente paciente = new Paciente();
-                paciente.Name = nombre;                
-                try
-                {
-                    Convert.ToInt32(id);
-                    paciente.Id = id;
+                if(ArbolVL.YaEsta(id, ArbolVL.raiz)){
+                    return Content("Ese ID ya esta ingresado, porfavor verifique sus datos.");
                 }
-                catch (Exception e)
+                else
                 {
-                    return Content("El ID debe ser un valor numerico.\n" + e.Message);
-                }
-                try
-                {
-                    paciente.Age = Convert.ToInt32(edad);
-                }
-                catch (Exception e)
-                {
-                    return Content("La edad debe ser numerica.\n" + e.Message);
-                }
-                try
-                {
-                    Convert.ToInt32(tel);
-                    paciente.Tel = tel;
-                }
-                catch (Exception e)
-                {
-                    return Content("El telefono debe ser un valor numerico.\n" + e.Message);
-                }                
-                paciente.LastConsult = ultConsulta;
-                paciente.ProxConsult = proxConsulta;
-                paciente.Diagnostico = diagnostico;
+                    Paciente paciente = new Paciente();
+                    paciente.Name = nombre;
+                    try
+                    {
+                        Convert.ToInt32(id);
+                        paciente.Id = id;
+                    }
+                    catch (Exception e)
+                    {
+                        return Content("El ID debe ser un valor numerico.\n" + e.Message);
+                    }
+                    try
+                    {
+                        paciente.Age = Convert.ToInt32(edad);
+                    }
+                    catch (Exception e)
+                    {
+                        return Content("La edad debe ser numerica.\n" + e.Message);
+                    }
+                    try
+                    {
+                        Convert.ToInt32(tel);
+                        paciente.Tel = tel;
+                    }
+                    catch (Exception e)
+                    {
+                        return Content("El telefono debe ser un valor numerico.\n" + e.Message);
+                    }
+                    paciente.LastConsult = ultConsulta;
+                    paciente.ProxConsult = proxConsulta;
+                    paciente.Diagnostico = diagnostico;
 
-                ArbolVL.Insertar(paciente);
-                pacientesList.Add(paciente);
+                    ArbolVL.Insertar(paciente);
 
-                return Content("1");
+                    return Content("1");
+                }
+                
             }
             catch (Exception e)
             {
@@ -82,7 +88,12 @@ namespace Proyecto.Controllers
                 }
                 else
                 {
-                    Paciente paciente = ArbolVL.BuscarNombre(nombre: nombre, r: ArbolVL.raiz);
+                    Paciente paciente = ArbolVL.BuscarNombre(nombre: nombre, r: ArbolVL.raiz, null);
+                    if (paciente == null)
+                    {
+                        return View(new Paciente{Name = "No existe."});
+                    }
+                    else 
                     return View(paciente);
                 }
             }
@@ -95,6 +106,7 @@ namespace Proyecto.Controllers
         //...................................SEGUIMIENTO DE TRATAMIENTOS.................................
         public IActionResult DRLD()
         {
+            pacientesList = new List<Paciente>();
             //................OBTENER PACIENTES QUE DEBERIAN REALIZAR LIMPIEZA DENTAL...............................................
             pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             List<Paciente> LD = new List<Paciente>();
@@ -118,6 +130,7 @@ namespace Proyecto.Controllers
         }
         public IActionResult DSTO()
         {
+            pacientesList = new List<Paciente>();
             pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE ORTODONCIA..........................
             List<Paciente> TO = new List<Paciente>();
@@ -126,10 +139,13 @@ namespace Proyecto.Controllers
             {
                 foreach (var paciente in pacientesList)
                 {
-                    if ((paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")) && ((hoy - paciente.LastConsult).TotalDays >= 60)) // es ortodonica y no a ido en 2 meses o 60 dias
+                    if(paciente.Diagnostico != null)
                     {
-                        TO.Add(paciente);
-                    }
+                        if ((paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia")) && ((hoy - paciente.LastConsult).TotalDays >= 60)) // es ortodonica y no a ido en 2 meses o 60 dias
+                        {
+                            TO.Add(paciente);
+                        }
+                    }                    
                 }
                 return View(TO);
             }
@@ -140,6 +156,7 @@ namespace Proyecto.Controllers
         }        
         public IActionResult DSTC()
         {
+            pacientesList = new List<Paciente>();
             pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO DE CARIES..........................
             List<Paciente> TC = new List<Paciente>();
@@ -148,10 +165,13 @@ namespace Proyecto.Controllers
             {
                 foreach (var paciente in pacientesList)
                 {
-                    if ((paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")) && ((hoy - paciente.LastConsult).TotalDays >= 120)) // es caries y no a ido en 4 meses o 120 dias
+                    if(paciente.Diagnostico != null)
                     {
-                        TC.Add(paciente);
-                    }
+                        if ((paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries")) && ((hoy - paciente.LastConsult).TotalDays >= 120)) // es caries y no a ido en 4 meses o 120 dias
+                        {
+                            TC.Add(paciente);
+                        }
+                    }                    
                 }
                 return View(TC);
             }
@@ -162,6 +182,7 @@ namespace Proyecto.Controllers
         }
         public IActionResult DSTE()
         {
+            pacientesList = new List<Paciente>();
             pacientesList = ArbolVL.toList(pacientesList, ArbolVL.raiz);
             //................OBTENER PACIENTES QUE DEBERIAN DAR SEGUIMIENTO DE SU TRATAMIENTO ESPECIFICO..........................
             bool ContainsOrto;
@@ -177,19 +198,30 @@ namespace Proyecto.Controllers
                 {
                     if (paciente.Diagnostico == null)
                     {
-                        Limpieza = true;
+                        Limpieza = true;                       
                     }
                     else Limpieza = false;
-                    if (paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia"))
+                    if(paciente.Diagnostico != null)
                     {
-                        ContainsOrto = true;
+                        if (paciente.Diagnostico.Contains("ortodoncia") || paciente.Diagnostico.Contains("Ortodoncia"))
+                        {
+                            ContainsOrto = true;
+                        }
+                        else ContainsOrto = false;
+                        if (paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries"))
+                        {
+                            ContainsCaries = true;
+                        }
+                        else ContainsCaries = false;
                     }
-                    else ContainsOrto = false;
-                    if (paciente.Diagnostico.Contains("caries") || paciente.Diagnostico.Contains("Caries"))
+                    else
                     {
-                        ContainsCaries = true;
+                        ContainsOrto = false;
+                        ContainsCaries = false;
                     }
-                    else ContainsCaries = false;
+                        
+
+
 
                     if (!ContainsCaries && !ContainsOrto && !Limpieza)// tiene diagnostico pero no es ni caries ni ortodoncia
                     {
@@ -209,13 +241,11 @@ namespace Proyecto.Controllers
         bool Ready(DateTime Fech)
         {
             foreach (var fecaa in AgendaList)
-            {
-
+            {                
                 if (fecaa.feca == Fech)
                 {
                     return true;
                 }
-
             }
             return false;
         }
@@ -269,6 +299,14 @@ namespace Proyecto.Controllers
                 if (nombre == null && id == null)
                 {
                     return Content("Por favor ingrese nombre y Id");
+                }
+                try
+                {
+                    Convert.ToInt32(id);
+                }
+                catch (Exception e)
+                {
+                    return Content("ERROR 404: valor numerico not found.");
                 }
                 if (id != null)
                 {

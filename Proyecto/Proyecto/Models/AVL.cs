@@ -35,7 +35,7 @@
         //Busqueda
         public Nodo BuscarID(string id, Nodo r)
         {
-            if (raiz == null)
+            if (r == null)
             {
                 return null;
             }
@@ -57,12 +57,11 @@
             }
 
         }
-        public Paciente BuscarNombre(string nombre, Nodo r)
+        public Paciente BuscarNombre(string nombre, Nodo r, Paciente p)
         {
-            Paciente p = new Paciente{ Name = "No Existe" };
             if(r.subIzq != null)
             {
-                BuscarNombre(nombre, r.subIzq);
+                BuscarNombre(nombre, r.subIzq,p);
             }
             if(r.paciente.Name == nombre)
             {
@@ -70,10 +69,10 @@
             }
             if(r.subDer != null)
             {
-                BuscarNombre(nombre, r.subDer);
+                BuscarNombre(nombre, r.subDer,p);
             }
-
             return p;
+            
         }
 
         //Obtener factor de equilibrio
@@ -215,6 +214,15 @@
         public void Editar(Paciente p, DateTime fecha)
         {
             p.ProxConsult = fecha;
+        }
+        public bool YaEsta(string id, Nodo r)
+        {
+            Nodo temp = BuscarID(id, r);
+            if (temp == null)
+            {
+                return false;
+            }
+            else return true;
         }
     }
 }
