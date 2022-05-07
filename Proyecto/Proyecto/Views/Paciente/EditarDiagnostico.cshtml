@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Editar Diagnostico";
+}
+<h1>@ViewData["Title"]</h1>
+@using(Html.BeginForm("Editar","Paciente",FormMethod.Post,new {enctype = "multipart/form-data"}))
+{
+
+    <label for="id">ID:</label>
+    <input type="text" name="id"/>
+    <hr />
+    <label for="diagnostico">Nuevo diagnostico:</label> 
+    <input type="text" name="diagnostico"/>
+    <input type="submit" value="Confirmar">
+}

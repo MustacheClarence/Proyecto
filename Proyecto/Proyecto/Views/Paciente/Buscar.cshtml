@@ -14,6 +14,7 @@
                 <td>Ultima visita</td>
                 <td>Proxima visita</td>
                 <td>Diagnostico</td>
+                <td>Editar</td>
             </tr>
         </thead>        
             <tr>
@@ -23,6 +24,11 @@
                 <td>@Model.LastConsult</td>
                 <td>@Model.ProxConsult</td>
                 <td>@Model.Diagnostico</td>
-            </tr>       
-    </table>
+            <td>@using(Html.BeginForm("EditarDiagnostico","Paciente",FormMethod.Post,new {enctype = "multipart/form-data" }))
+                {
+                    <input type="submit" value="Editar diagnostico">
+                }</td>
+        </tr>       
+    </table>    
 }
+

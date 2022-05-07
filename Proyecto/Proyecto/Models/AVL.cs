@@ -2,14 +2,14 @@
 {
     public class AVL
     {
-        public Nodo raiz;
+        public Nodo<Paciente> raiz;
         public AVL()
         {
             this.raiz = null;
         }
 
         //Arbol a lista
-        public List<Paciente> toList(List<Paciente> lista, Nodo r)
+        public List<Paciente> toList(List<Paciente> lista, Nodo<Paciente> r)
         {
             if (r != null)
             {
@@ -28,12 +28,12 @@
             else
             {
                 return null;
-            }  
-          
-            
+            }
+
+
         }
         //Busqueda
-        public Nodo BuscarID(string id, Nodo r)
+        public Nodo<Paciente> BuscarID(string id, Nodo<Paciente> r)
         {
             if (r == null)
             {
@@ -57,26 +57,26 @@
             }
 
         }
-        public Paciente BuscarNombre(string nombre, Nodo r, Paciente p)
+        public Paciente BuscarNombre(string nombre, Nodo<Paciente> r, Paciente p)
         {
-            if(r.subIzq != null)
+            if (r.subIzq != null)
             {
-                BuscarNombre(nombre, r.subIzq,p);
+                BuscarNombre(nombre, r.subIzq, p);
             }
-            if(r.paciente.Name == nombre)
+            if (r.paciente.Name == nombre)
             {
                 p = r.paciente;
             }
-            if(r.subDer != null)
+            if (r.subDer != null)
             {
-                BuscarNombre(nombre, r.subDer,p);
+                BuscarNombre(nombre, r.subDer, p);
             }
             return p;
-            
+
         }
 
         //Obtener factor de equilibrio
-        int FE(Nodo arbol)
+        int FE(Nodo<Paciente> arbol)
         {
             if (arbol == null)
             {
@@ -88,18 +88,18 @@
             }
         }
         //Rotaciones simples
-        Nodo rotIzq(Nodo arbol)
+        Nodo<Paciente> rotIzq(Nodo<Paciente> arbol)
         {
-            Nodo aux = arbol.subIzq;
+            Nodo<Paciente> aux = arbol.subIzq;
             arbol.subIzq = aux.subDer;
             aux.subDer = arbol;
             arbol.FactorEquilibrio = Math.Max(FE(arbol.subIzq), FE(arbol.subDer)) + 1;
             aux.FactorEquilibrio = Math.Max(FE(aux.subIzq), FE(aux.subDer)) + 1;
             return aux;
         }
-        Nodo rotDer(Nodo arbol)
+        Nodo<Paciente> rotDer(Nodo<Paciente> arbol)
         {
-            Nodo aux = arbol.subDer;
+            Nodo<Paciente> aux = arbol.subDer;
             arbol.subDer = aux.subIzq;
             aux.subIzq = arbol;
             arbol.FactorEquilibrio = Math.Max(FE(arbol.subIzq), FE(arbol.subDer)) + 1;
@@ -107,16 +107,16 @@
             return aux;
         }
         // Rotaciones dobles
-        Nodo DrotIzq(Nodo arbol)
+        Nodo<Paciente> DrotIzq(Nodo<Paciente> arbol)
         {
-            Nodo aux;
+            Nodo<Paciente> aux;
             arbol.subIzq = rotDer(arbol.subIzq);
             aux = rotIzq(arbol);
             return aux;
         }
-        Nodo DrotDer(Nodo arbol)
+        Nodo<Paciente> DrotDer(Nodo<Paciente> arbol)
         {
-            Nodo aux;
+            Nodo<Paciente> aux;
             arbol.subDer = rotIzq(arbol.subDer);
             aux = rotDer(arbol);
             return aux;
@@ -125,7 +125,7 @@
         //insertar segun el orden
         public void Insertar(Paciente nuevo)
         {
-            Nodo nuevoArbol = new Nodo(nuevo);
+            Nodo<Paciente> nuevoArbol = new Nodo<Paciente>(nuevo);
             if (raiz == null)
             {
                 raiz = nuevoArbol;
@@ -135,13 +135,13 @@
                 raiz = InsertarID(nuevoArbol, raiz);
             }
         }
-        Nodo InsertarID(Nodo nuevo, Nodo subArbol)
+        Nodo<Paciente> InsertarID(Nodo<Paciente> nuevo, Nodo<Paciente> subArbol)
         {
             //nuevo = nuevo dato a ingresar
             //subArbol = raiz actual del AVL
             //nuevoPadre = raiz del AVL despues de las rotaciones
 
-            Nodo nuevoPadre = subArbol;
+            Nodo<Paciente> nuevoPadre = subArbol;
             // si es menor
             if (string.Compare(nuevo.paciente.Id, subArbol.paciente.Id) < 0)
             {
@@ -215,9 +215,13 @@
         {
             p.ProxConsult = fecha;
         }
-        public bool YaEsta(string id, Nodo r)
+        public void EditarD(Paciente p, string diagnostico)
         {
-            Nodo temp = BuscarID(id, r);
+            p.Diagnostico = diagnostico;
+        }
+        public bool YaEsta(string id, Nodo<Paciente> r)
+        {
+            Nodo<Paciente> temp = BuscarID(id, r);
             if (temp == null)
             {
                 return false;

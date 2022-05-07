@@ -1,14 +1,14 @@
 ﻿using Proyecto.Models;
 namespace Proyecto.Models
 {
-    public class Nodo
+    public class Nodo<T>
     {
-        public Paciente paciente;
-        public Nodo subIzq;
-        public Nodo subDer;
+        public T paciente;
+        public Nodo<T> subIzq;
+        public Nodo<T> subDer;
         public int FactorEquilibrio;
 
-        public Nodo(Paciente p)
+        public Nodo(T p)
         {
             this.paciente = p;
             this.subIzq = null;

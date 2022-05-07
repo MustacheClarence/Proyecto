@@ -8,6 +8,7 @@ namespace Proyecto.Controllers
         static AVL ArbolVL = new AVL();
         static List<Paciente> pacientesList;
         static List<NodoFecha> AgendaList = new List<NodoFecha>();
+        List<Paciente> pacientesDeArchivo;
         DateTime hoy = DateTime.Now;
         public IActionResult Index()
         {
@@ -83,8 +84,16 @@ namespace Proyecto.Controllers
                 }
                 if (id != null)
                 {
-                    Paciente paciente = ArbolVL.BuscarID(id, ArbolVL.raiz).paciente;
-                    return View(paciente);
+                    try
+                    {
+                        Paciente paciente = ArbolVL.BuscarID(id, ArbolVL.raiz).paciente;
+                        return View(paciente);
+                    }
+                    catch (Exception e)
+                    {
+
+                        return Content("El dpi no se encuentra en el sistema." + e);
+                    }                    
                 }
                 else
                 {
@@ -324,6 +333,87 @@ namespace Proyecto.Controllers
             {
                 return Content("Algo anda mal, probablemente no hayan pacientes ingresados");
             }
+        }
+
+        public IActionResult Editar(string id, string diagnostico)
+        {
+            try
+            {
+                ArbolVL.EditarD(ArbolVL.BuscarID(id, ArbolVL.raiz).paciente, diagnostico);
+                return Content("Diagnostico editado correctamente");
+            }
+            catch (Exception e)
+            {
+                return Content("Oh oh, algo a salido mal");
+            }
+            
+        }
+        public IActionResult EditarDiagnostico()
+        {
+            return View(); 
+        }
+
+
+        //..................LEER ARCHIVO DE PRUEBA.....................................
+        public IActionResult LeerArchivo(IFormFile file)
+        {
+            if (file != null)
+            {
+                pacientesDeArchivo = new List<Paciente>();
+                try
+                {
+                    string acceso = Path.Combine(Path.GetTempPath(), file.Name);
+                    using (var stream = new FileStream(acceso, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+
+                    string Todo = System.IO.File.ReadAllText(acceso);
+                    foreach (string Actual in Todo.Split('\n'))
+                    {
+                        if (!string.IsNullOrEmpty(Actual))
+                        {
+                            string[] data = Actual.Split(',');
+                            pacientesDeArchivo.Add(new Paciente()
+                            {
+                                Name = data[0],
+                                Id = data[1],
+                                Age = Convert.ToInt32(data[2]),
+                                Tel = data[3],
+                                LastConsult = Convert.ToDateTime(data[4]),
+                                ProxConsult = Convert.ToDateTime(data[5]),
+                                Diagnostico = data[6]
+                            });
+                            ArbolVL.Insertar(new Paciente()
+                            {
+                                Name = data[0],
+                                Id = data[1],
+                                Age = Convert.ToInt32(data[2]),
+                                Tel = data[3],
+                                LastConsult = Convert.ToDateTime(data[4]),
+                                ProxConsult = Convert.ToDateTime(data[5]),
+                                Diagnostico = data[6]
+                            });
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    ViewBag.Error = e.Message;
+                }
+            }
+
+            return View(pacientesDeArchivo);
+        }
+        public IActionResult AgregarMasivo(List<Paciente> lp)
+        {
+            foreach (var paciente in lp)
+            {
+                ArbolVL.Insertar(paciente);
+            }
+            return Content("Agregado!");
         }
     }
 

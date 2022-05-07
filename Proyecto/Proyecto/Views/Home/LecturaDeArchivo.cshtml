@@ -1,0 +1,12 @@
+﻿@model List<Paciente>
+@{
+    ViewData["Title"] = "Agrega pacientes por medio de archivo";
+}
+<h2>@ViewData["Title"]</h2>
+
+@using(Html.BeginForm("LeerArchivo","Paciente",FormMethod.Post,new {enctype = "multipart/form-data"}))
+{
+    <label for="file"> Subir Archivo </label>
+    <input type ="file" name = "file" id="file"/>
+    <input type ="submit" value="Enviar"/>
+}

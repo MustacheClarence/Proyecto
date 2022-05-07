@@ -19,6 +19,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Home/LecturaDeArchivo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMZWN0dXJhRGVBcmNoaXZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Home/Pacientes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYWNpZW50ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -49,6 +53,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Paciente/DSTO.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWVudGVcRFNUTy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Paciente/EditarDiagnostico.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWVudGVcRWRpdGFyRGlhZ25vc3RpY28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Paciente/LeerArchivo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWVudGVcTGVlckFyY2hpdm8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/samer/Documents/Programas/Proyecto/Proyecto/Proyecto/Views/Shared/Error.cshtml]
